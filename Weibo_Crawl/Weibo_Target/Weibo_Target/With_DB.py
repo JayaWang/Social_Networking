@@ -3,7 +3,7 @@
 import MySQLdb
 import redis
 
-class All_DB(object):
+class Mysql_DB(object):
     def __init__(self):
         host = '127.0.0.1'
         user = 'root'
@@ -15,11 +15,6 @@ class All_DB(object):
             print ('数据库连接错误' + str(e))
         else:
             print '成功连接数据库'
-
-        try:
-            self.r = redis.Redis(host='127.0.0.1', port=6379, db=0)
-        except Exception as e:
-            print ('连接Redis失败' + str(e))
 
     def Insert_MySQL(self, sql_command): #Insert/Update
         try:
@@ -37,6 +32,13 @@ class All_DB(object):
             return data
         except Exception as e:
             print ('读取执行' + sql_command + '失败' + str(e))
+
+class Redis_DB(object):
+    def __init__(self):
+        try:
+            self.r = redis.Redis(host='127.0.0.1', port=6379, db=0)
+        except Exception as e:
+            print ('连接Redis失败' + str(e))
 
     def Insert_Redis(self, url):
         try:

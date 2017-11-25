@@ -2,7 +2,6 @@
 
 import scrapy
 from scrapy_redis.spiders import RedisSpider
-from Weibo_Target.With_DB import All_DB
 
 class T_Spider(RedisSpider):
     name = "TargetSpider"
