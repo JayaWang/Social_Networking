@@ -29,10 +29,12 @@ class T_Spider(RedisSpider):
                 comment = re.findall('评论\[(\d+)\]'.decode('utf8'), div.extract())  # 评论数
                 comment_url = div.xpath('div/a[@class="cc"]/@href').extract() #评论页地址
                 tp = div.xpath('div/span[@class="ct"]/text()').extract()
+                Up_time = datetime.datetime.now().strftime('%Y-%m-%d-%H-%M') # 当前时间
 
                 item = WeiboTargetItem()
                 item["Target_ID"] = U_ID + "-" + T_id
                 item["Target_Name"] = name
+                item["Update_Time"] = Up_time
                 if content:
                     item["Tweet_Content"] = " ".join(content).strip('[位置]'.decode('utf8'))  # 去掉最后的"[位置]"
                 if GPS:
@@ -47,6 +49,8 @@ class T_Spider(RedisSpider):
                     item["Tweet_Comment"] = int(comment[0])
                 if comment_url:
                     item["Comment_Urls"] = comment_url[0]
+
+
                 if tp:
                     tp = tp[0].split('来自'.decode('utf8'))
                     item["Tweet_Time"] = tp[0].replace(u"\xa0", "")
@@ -70,8 +74,9 @@ class T_Spider(RedisSpider):
             try:
                 url_next = selector.xpath(
                     'body/div[@class="pa" and @id="pagelist"]/form/div/a[text()="下页"]/@href'.decode('utf8')).extract()
-                a = Redis_DB(0) #翻页爬微博扔到db0里
-                a.Insert_Redis('Target_urls', url_next)
+                if url_next:
+                    a = Redis_DB(0) #翻页爬微博扔到db0里
+                    a.Insert_Redis('Target_urls', url_next)
             except Exception as e:
                 print ('插入redis队列错误' + str(e))
 
@@ -79,23 +84,12 @@ class T_Spider(RedisSpider):
         if '年' in date:
             return 100 #随便写个大于7的
         elif '月' in date:
-            Y = datetime.datetime.now().strftime('%y')
-            M = datetime.datetime.now().strftime('%m')
-            D = datetime.datetime.now().strftime('%d')
-            now = datetime.datetime(Y, M, D)
+            YMD = datetime.datetime.now().strftime('%Y-%m-%d').split('-')
+            now = datetime.datetime(YMD[0], YMD[1], YMD[2])
             a = re.findall('(\d+)月(\d+)日', date)
-            old = datetime.datetime(Y, a[0][0], a[0][1])
+            old = datetime.datetime(YMD[0], a[0][0], a[0][1])
             b = now - old
             return b
         else: #今天的帖子
             return 0
-
-
-
-
-
-
-
-
-
 

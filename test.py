@@ -14,15 +14,22 @@ import re
 a = '<a href="https://weibo.cn/comment/Fm8245xFU?uid=5187664653&amp;rl=0#cmtfrm" class="cc xh-highlight">评论[34281]</a>'
 b = re.findall('(?<='<a href="').*?(?='评论\[(\d+)\]')', a)
 print b
-'''
+
 import datetime
-data = datetime.datetime.now().strftime('%Y-%m-%d')
-a = datetime.datetime(3,1)
-b = datetime.datetime(2,28)
-print data
-'''
+YMD = datetime.datetime.now().strftime('%m-%d-%H-%M').split('-')
+print YMD
+
 import re
 date = '11月25日'
 old = re.findall('(\d+)月(\d+)日', date)
 print old[0][0], old[0][1]'''
+import re
+text ='<span class="tc">微博[308]</span><a href="/1784609372/follow">关注[85]</a><a href="/1784609372/fans">粉丝[511]</a>'
 
+tweet_num = re.findall('微博\[(\d*)\]', text)[0]
+fans = re.findall('粉丝\[(\d*)\]', text)[0]
+follow_num = re.findall('关注\[(\d*)\]', text)[0]
+print tweet_num, fans, follow_num
+url = 'https://weibo.cn/u/5457837135'
+ID = re.findall('/u/(\d+)', url)[0] #用户ID
+print ID
