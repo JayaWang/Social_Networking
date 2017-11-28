@@ -3,7 +3,7 @@
 #爬取目标人物的微博，第一次爬一整个月的，之后保持一个星期的更新
 from scrapy.selector import Selector
 from scrapy_redis.spiders import RedisSpider
-from With_DB import Redis_DB
+from With_DB import Redis_DB, Mysql_DB
 from items import WeiboTargetItem
 import re
 import datetime
@@ -14,8 +14,9 @@ class T_Spider(RedisSpider):
 
     def parse(self, response):
         selector = Selector(response)
-        name = response.meta['name'] #名字
-        sign_all = response.meta['over'] #用来做翻页程度的标志，N就翻一个月，Y就更新一周内的
+        last = re.findall('\|\|\|(.*)', response.url) #末尾信息
+        name = last[:-1]
+        sign_tweet = last[-1] #用来做翻页程度的标志，N就翻一个月，Y就更新一周内的
         sign_time = 0
         U_ID = re.findall('(\d+)/profile', response.url)[0] #用户ID
         divs = selector.xpath('body/div[@class="c" and @id]') #当页的所有微博
@@ -35,7 +36,7 @@ class T_Spider(RedisSpider):
                 item = WeiboTargetItem()
                 item["Target_ID"] = U_ID + "-" + T_id
                 item["Target_Name"] = name
-                item["Update_Time"] = Up_time
+                item["Update_Time"] = Up_time #标记的时间是给下次做参照的
                 if content:
                     item["Tweet_Content"] = " ".join(content).strip('[位置]'.decode('utf8'))  # 去掉最后的"[位置]"
                 if GPS:
@@ -54,7 +55,7 @@ class T_Spider(RedisSpider):
                     tp = tp[0].split('来自'.decode('utf8'))
                     item["Tweet_Time"] = tp[0].replace(u"\xa0", "")
                     #做个爬取的判断，判断还要不要翻页
-                    if sign_all == 'Y':
+                    if sign_tweet == 'Y':
                         if self.Date_Measure(tp[0]) <7:
                             pass
                         else:
@@ -66,9 +67,21 @@ class T_Spider(RedisSpider):
                             sign_time += 1
                     if len(tp) == 2: #保证有平台
                         item["Tweet_Platform"] = tp[1].replace(u"\xa0", "")
+                    try:
+                        m1 = Mysql_DB()
+                        sql = 'select Update_Time from Tweet where "' + str(U_ID) + '-' + str(T_id) + '" in (Target_ID)'
+                        sign_tweet_tmp = m1.Query_MySQL(sql)
+                        if sign_tweet_tmp[0] == 'Empty':
+                            sign_comment = 'N'
+                        else:
+                            sign_comment = 'Y'
+                    except Exception as e:
+                        print '判断sign_comment错误' + str(e)
+                    if sign_comment:
+                        item["Tweet_Over"] = sign_comment
                 yield WeiboTargetItem
                 r1 = Redis_DB(1) #评论相关扔到db1
-                comment_url_sign = comment_url + '|||' + str(Up_time) + sign_all #前面是地址,|||后是更新时间,[-1]是标志位,判断comment里是否启用更新时间
+                comment_url_sign = comment_url + '|||' + str(sign_tweet_tmp[0]) + sign_comment #前面是地址,|||后是更新时间,[-1]是标志位,判断comment里是否启用更新时间
                 r1.Insert_Redis('Comment_urls', comment_url_sign)
             except Exception as e:
                 print ('抓取页面内容错误' + str(e))
@@ -91,7 +104,11 @@ class T_Spider(RedisSpider):
             a = re.findall('(\d+)月(\d+)日', date)
             old = datetime.datetime(YMD[0], a[0][0], a[0][1])
             b = now - old
-            return b
+            try:
+                c = re.findall('(\d*)\sday', str(b))[0]
+            except:
+                pass
+            return int(c)
         else: #今天的帖子
             return 0
 

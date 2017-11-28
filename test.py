@@ -37,7 +37,38 @@ print ID
 for i in [1,2,3,4,5,6,7,8]:
     if i in [2,4,6,8]:
         continue
-    print i'''
+    print i
 
 a = 'qwertyui'
 print a[2:]
+import re
+a = 'http://www.baidu.com|||woshiwangjiayunY'
+r = re.findall('\|\|\|(.*)', a)
+print r[0][:-1]
+for i in [1,2,3,4,5]:
+    if i == 2:
+        kk = 'Y'
+
+print kk
+import re
+a = '<a href="/u/5817026063">用户5817026063</a>'
+U_ID = re.findall('用户(\d*)', a)
+print U_ID[0]
+import datetime
+import re
+a = datetime.datetime(2017, 11, 27, 11, 11)
+b = datetime.datetime(2017, 11, 27, 11, 11)
+c = a - b
+if 'day' in str(c):
+    print 'a<b'
+else:
+    print 'a>b'
+'''
+
+import re, datetime
+date = 'Ong东仔 :有点儿张一山  举报   赞[0]  回复   11月27日 13:01 来自iPhone客户端'
+a = re.findall('(\d+)月(\d+)日\s(\d+):(\d+)', date)
+print a[0]
+
+
+

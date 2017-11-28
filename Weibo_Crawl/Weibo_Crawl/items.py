@@ -14,14 +14,15 @@ class WeiboTargetItem(scrapy.Item):
     Tweet_GPS = scrapy.Field() #发布地理位置
     Comment_Urls = scrapy.Field() #评论页主页
     Update_Time = scrapy.Field() #爬取本条的时间，用于做评论增量的判断
+    Tweet_Over = scrapy.Field() #给target和comment参考
 
 class WeiboCommentItem(scrapy.Item):
+    Comment_ID = scrapy.Field() #评论者ID
     Comment_Name = scrapy.Field() #评论者名字
     Comment_Content = scrapy.Field() #评论内容
     Comment_Time = scrapy.Field() #评论时间
     Comment_Liked = scrapy.Field() #评论点赞数
     Comment_Platform =scrapy.Field() #发布设备
-    Comment_GPS = scrapy.Field() #发布地理位置
     Comment_Personal_Url =scrapy.Field() #评论者个人主页
 
 class WeiboPersonalItm(scrapy.Item):
