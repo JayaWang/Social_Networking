@@ -9,7 +9,7 @@ import re
 import datetime
 
 class T_Spider(RedisSpider):
-    name = "TargetSpider"
+    name = 'TargetSpider'
     redis_key = 'Target_urls'
 
     def parse(self, response):
@@ -27,7 +27,8 @@ class T_Spider(RedisSpider):
                 liked = re.findall('赞\[(\d+)\]'.decode('utf8'), div.extract())  # 点赞数
                 transfer = re.findall('转发\[(\d+)\]'.decode('utf8'), div.extract())  # 转载数
                 comment = re.findall('评论\[(\d+)\]'.decode('utf8'), div.extract())  # 评论数
-                comment_url = div.xpath('div/a[@class="cc"]/@href').extract() #评论页地址
+                #comment_url = div.xpath('div/a[@class="cc"]/@href').extract() #评论页地址
+                comment_url = 'https://weibo.cn/comment/' + str(T_id[2:]) + '?uid=' + str(U_ID) + '&page=1'
                 tp = div.xpath('div/span[@class="ct"]/text()').extract()
                 Up_time = datetime.datetime.now().strftime('%Y-%m-%d-%H-%M') # 当前时间
 
@@ -49,8 +50,6 @@ class T_Spider(RedisSpider):
                     item["Tweet_Comment"] = int(comment[0])
                 if comment_url:
                     item["Comment_Urls"] = comment_url[0]
-
-
                 if tp:
                     tp = tp[0].split('来自'.decode('utf8'))
                     item["Tweet_Time"] = tp[0].replace(u"\xa0", "")
@@ -68,6 +67,9 @@ class T_Spider(RedisSpider):
                     if len(tp) == 2: #保证有平台
                         item["Tweet_Platform"] = tp[1].replace(u"\xa0", "")
                 yield WeiboTargetItem
+                r1 = Redis_DB(1) #评论相关扔到db1
+                comment_url_sign = comment_url + '|||' + str(Up_time) + sign_all #前面是地址,|||后是更新时间,[-1]是标志位,判断comment里是否启用更新时间
+                r1.Insert_Redis('Comment_urls', comment_url_sign)
             except Exception as e:
                 print ('抓取页面内容错误' + str(e))
         if sign_time == 0:
@@ -75,8 +77,8 @@ class T_Spider(RedisSpider):
                 url_next = selector.xpath(
                     'body/div[@class="pa" and @id="pagelist"]/form/div/a[text()="下页"]/@href'.decode('utf8')).extract()
                 if url_next:
-                    a = Redis_DB(0) #翻页爬微博扔到db0里
-                    a.Insert_Redis('Target_urls', url_next)
+                    r0 = Redis_DB(0) #翻页爬微博扔到db0里
+                    r0.Insert_Redis('Target_urls', url_next)
             except Exception as e:
                 print ('插入redis队列错误' + str(e))
 

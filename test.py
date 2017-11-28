@@ -22,7 +22,7 @@ print YMD
 import re
 date = '11月25日'
 old = re.findall('(\d+)月(\d+)日', date)
-print old[0][0], old[0][1]'''
+print old[0][0], old[0][1]
 import re
 text ='<span class="tc">微博[308]</span><a href="/1784609372/follow">关注[85]</a><a href="/1784609372/fans">粉丝[511]</a>'
 
@@ -33,3 +33,11 @@ print tweet_num, fans, follow_num
 url = 'https://weibo.cn/u/5457837135'
 ID = re.findall('/u/(\d+)', url)[0] #用户ID
 print ID
+
+for i in [1,2,3,4,5,6,7,8]:
+    if i in [2,4,6,8]:
+        continue
+    print i'''
+
+a = 'qwertyui'
+print a[2:]
