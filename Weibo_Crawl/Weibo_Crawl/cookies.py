@@ -83,7 +83,7 @@ def get_cookie_from_weibo_cn(account, password):
         failure = 0
         while "微博" in browser.title and failure < 5:
             failure += 1
-            browser.save_screenshot("aa.png")
+            browser.save_screenshot("/Users/WJY/Desktop/check_pic/aa.png") #存放验证码的位置
             username = browser.find_element_by_name("mobile")
             username.clear()
             username.send_keys(account)
