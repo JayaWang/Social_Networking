@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import sqlalchemy
+from sqlalchemy import create_engine
 from With_DB import Mysql_DB
 from items import WeiboTargetItem, WeiboCommentItem, WeiboPersonalItem
 
@@ -30,5 +31,15 @@ class WeiboCrawlPipeline(object):
                 self.db.Insert_MySQL(sql)
             except Exception as e:
                 print '插入Personal数据库错误' + str(e)
+
+'''
+class WeiboCrawlPipeline(object):
+    def __init__(self):
+        self.engine = create_engine('mysql+mysqldb://root:228228@127.0.0.1:3306/Weibo')
+'''
+
+
+
+
 
 
