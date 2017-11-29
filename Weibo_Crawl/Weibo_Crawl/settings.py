@@ -9,7 +9,7 @@
 #     http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 #     http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
 
-BOT_NAME = 'Weibo_Crawl' #这里有问题，setting怎么去包含三个spider
+BOT_NAME = 'Weibo_Crawl'
 
 SPIDER_MODULES = ['Weibo_Crawl.spiders']
 NEWSPIDER_MODULE = 'Weibo_Crawl.spiders'
@@ -82,7 +82,7 @@ REDIS_PORT = '6379'
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    'Weibo_Crawl.pipelines.WeiboTargetPipeline': 300,
+    'Weibo_Crawl.pipelines.WeiboCrawlPipeline': 300,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)

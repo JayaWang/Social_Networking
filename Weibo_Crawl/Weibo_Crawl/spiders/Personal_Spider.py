@@ -3,7 +3,7 @@
 #爬取个人信息的爬虫，每个用户只爬一次，注意去重
 from scrapy.selector import Selector
 from scrapy_redis.spiders import RedisSpider
-from items import WeiboPersonalItm
+from items import WeiboPersonalItem
 import re
 from scrapy import Request
 import datetime
@@ -43,7 +43,7 @@ class P_Spider(RedisSpider):
             authentication = re.findall('认证[：:]?(.*?);'.decode('utf8'), text1)
             #还有个标签，先放着，等下再想想
 
-            item = WeiboPersonalItm()
+            item = WeiboPersonalItem()
             item["Personal_ID"] = ID
             item["Personal_Tweet_Num"] = tweet_num
             item["Personal_Follow_Num"] = follow_num
@@ -72,6 +72,6 @@ class P_Spider(RedisSpider):
             if authentication and authentication[0]:
                 item["Personal_Authentication"] = authentication[0].replace(u"\xa0", "")
 
-            yield WeiboPersonalItm
+            yield WeiboPersonalItem
         except Exception as e:
             print '爬取个人资料页错误' + str(e)

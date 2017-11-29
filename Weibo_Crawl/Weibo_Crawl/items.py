@@ -21,11 +21,11 @@ class WeiboCommentItem(scrapy.Item):
     Comment_Name = scrapy.Field() #评论者名字
     Comment_Content = scrapy.Field() #评论内容
     Comment_Time = scrapy.Field() #评论时间
-    Comment_Liked = scrapy.Field() #评论点赞数
+    Comment_Time = scrapy.Field() #评论点赞数
     Comment_Platform =scrapy.Field() #发布设备
     Comment_Personal_Url =scrapy.Field() #评论者个人主页
 
-class WeiboPersonalItm(scrapy.Item):
+class WeiboPersonalItem(scrapy.Item):
     Personal_ID = scrapy.Field() #用户ID
     Personal_Name = scrapy.Field() #名字
     Personal_Tweet_Num = scrapy.Field() #微博数
