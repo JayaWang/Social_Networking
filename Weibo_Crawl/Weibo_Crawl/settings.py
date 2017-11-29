@@ -63,6 +63,7 @@ DOWNLOADER_MIDDLEWARES = {
     'Weibo_Crawl.middlewares.Usage_Middleware': 400,
     'Weibo_Crawl.middlewares.Timeout_Middleware': 610,
     'Weibo_Crawl.middlewares.CookiesMiddleware': 410,
+    'Weibo_Crawl.middlewares.SignMiddleware': 300, #更新标志位
 }
 
 SCHEDULER = "scrapy_redis.scheduler.Scheduler"

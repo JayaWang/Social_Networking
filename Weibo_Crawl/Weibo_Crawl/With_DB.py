@@ -8,7 +8,7 @@ class Mysql_DB(object):
         host = '127.0.0.1'
         user = 'root'
         password = '228228'
-        db_name = 'Distributed_NTES'  #到时候这里改一下mysql就行了
+        db_name = 'Weibo'  #到时候这里改一下mysql就行了
         try:
             self.db_conn = MySQLdb.connect(host, user, password, db_name, charset="utf8")
         except Exception as e:

@@ -3,11 +3,11 @@
 #爬取评论页的具体评论内容，并且提供评论者个人主页地址
 from scrapy.selector import Selector
 from scrapy_redis.spiders import RedisSpider
-from items import WeiboCommentItem
+from Weibo_Crawl.items import WeiboCommentItem
 import re
 from scrapy import Request
 import datetime
-from With_DB import Redis_DB
+from Weibo_Crawl.With_DB import Redis_DB
 
 class C_Spider(RedisSpider):
     name = 'CommentSpider'
@@ -15,9 +15,8 @@ class C_Spider(RedisSpider):
 
     def parse(self, response):
         selector = Selector(response)
-        last = re.findall('\|\|\|(.*)', response.url)  # 末尾信息
-        Up_Time = last[:-1] #上一次更新评论区的时间
-        sign_comment = last[-1] #更新标志位
+        Up_Time = response.meta['sign0'] #上一次更新评论区的时间
+        sign_comment = response.meta['sign1'] #更新标志位
         divs = selector.xpath('body/div[@class="c" and @id]')  # 当页的所有评论
         sign_time = 0
         for div in divs:

@@ -3,7 +3,7 @@
 #爬取个人信息的爬虫，每个用户只爬一次，注意去重
 from scrapy.selector import Selector
 from scrapy_redis.spiders import RedisSpider
-from items import WeiboPersonalItem
+from Weibo_Crawl.items import WeiboPersonalItem
 import re
 from scrapy import Request
 import datetime

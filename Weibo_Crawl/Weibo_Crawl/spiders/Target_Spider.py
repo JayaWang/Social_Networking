@@ -3,8 +3,8 @@
 #爬取目标人物的微博，第一次爬一整个月的，之后保持一个星期的更新
 from scrapy.selector import Selector
 from scrapy_redis.spiders import RedisSpider
-from With_DB import Redis_DB, Mysql_DB
-from items import WeiboTargetItem
+from Weibo_Crawl.With_DB import Redis_DB, Mysql_DB
+from Weibo_Crawl.items import WeiboTargetItem
 import re
 import datetime
 
@@ -14,9 +14,8 @@ class T_Spider(RedisSpider):
 
     def parse(self, response):
         selector = Selector(response)
-        last = re.findall('\|\|\|(.*)', response.url) #末尾信息
-        name = last[:-1]
-        sign_tweet = last[-1] #用来做翻页程度的标志，N就翻一个月，Y就更新一周内的
+        name = response.meta['sign0']
+        sign_tweet = response.meta['sign1'] #标志位
         sign_time = 0
         U_ID = re.findall('(\d+)/profile', response.url)[0] #用户ID
         divs = selector.xpath('body/div[@class="c" and @id]') #当页的所有微博

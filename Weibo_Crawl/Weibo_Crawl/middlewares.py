@@ -2,7 +2,7 @@
 
 #暂时先放了随机header，代理ip更换，cookie更换，超时重请求四个中间件
 
-from scrapy import signals
+from scrapy import signals, Request
 import random
 from scrapy.downloadermiddlewares.useragent import UserAgentMiddleware
 from scrapy.downloadermiddlewares.downloadtimeout import DownloadTimeoutMiddleware
@@ -14,6 +14,7 @@ import redis
 import json
 from cookies import initCookie, updateCookie, removeCookie
 import os
+import re
 import logging
 logger = logging.getLogger(__name__)
 
@@ -192,3 +193,14 @@ class CookiesMiddleware(RetryMiddleware):
             os.system("pause")
         else:
             return response
+
+class SignMiddleware(object):
+    def process_request(self, request, spider):
+        url = request.url
+        if url[-1] in ['Y', 'N']:
+            last = re.findall('\|\|\|(.*)', url)  # 末尾信息
+            r = re.compile('\|\|\|.*')
+            newurl = r.sub('', url)
+            sign0 = last[:-1]
+            sign1 = last[-1]
+            return Request(newurl, meta={'sign0': sign0, 'sign1': sign1})
