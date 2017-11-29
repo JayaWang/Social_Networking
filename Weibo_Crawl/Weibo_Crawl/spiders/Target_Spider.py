@@ -111,4 +111,3 @@ class T_Spider(RedisSpider):
             return int(c)
         else: #今天的帖子
             return 0
-
