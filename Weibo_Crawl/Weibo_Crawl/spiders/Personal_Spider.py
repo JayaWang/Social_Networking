@@ -72,6 +72,6 @@ class P_Spider(RedisSpider):
             if authentication and authentication[0]:
                 item["Personal_Authentication"] = authentication[0].replace(u"\xa0", "")
 
-            yield WeiboPersonalItem
+            yield item
         except Exception as e:
             print '爬取个人资料页错误' + str(e)

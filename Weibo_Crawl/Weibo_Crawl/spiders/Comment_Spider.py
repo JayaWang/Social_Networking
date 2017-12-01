@@ -51,7 +51,7 @@ class C_Spider(RedisSpider):
                         pass
                     if len(tp) == 2:  # 保证有平台
                         item["Comment_Platform"] = tp[1].replace(u"\xa0", "")
-                yield WeiboCommentItem
+                yield item
                 r2 = Redis_DB(2)  # 个人信息扔到db2
                 r2.Insert_Redis('Personal_urls', personal_url)
             except Exception as e:

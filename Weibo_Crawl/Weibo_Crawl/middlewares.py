@@ -75,7 +75,7 @@ class Proxy_Middleware(object):
         self.use_num = 0
         self.proxy_ip = ''
     def process_request(self, request, spider):
-        if self.use_num % 100 == 0:
+        if self.use_num % 2 == 0:
             self.proxy_ip = Proxy().GetIP()  #每100次更换一次ip
         self.use_num += 1
         request.meta['proxy'] = self.proxy_ip
@@ -201,6 +201,6 @@ class SignMiddleware(object):
             last = re.findall('\|\|\|(.*)', url)  # 末尾信息
             r = re.compile('\|\|\|.*')
             newurl = r.sub('', url)
-            sign0 = last[:-1]
-            sign1 = last[-1]
+            sign0 = last[0][:-1]
+            sign1 = last[0][-1]
             return Request(newurl, meta={'sign0': sign0, 'sign1': sign1})

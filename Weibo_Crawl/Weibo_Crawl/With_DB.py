@@ -14,7 +14,7 @@ class Mysql_DB(object):
         except Exception as e:
             print ('数据库连接错误' + str(e))
         else:
-            print '成功连接数据库'
+            pass
 
     def Insert_MySQL(self, sql_command): #Insert/Update
         try:
