@@ -22,9 +22,6 @@ class T_Spider(RedisSpider):
         except Exception as e:
             print 'U_ID提取错误' + str(e)
         divs = selector.xpath('body/div[@class="c" and @id]') #当页的所有微博
-        print '======='
-        print divs
-        print '======='
         for div in divs:
             try:
                 T_id = div.xpath('@id').extract_first()  # 微博id
@@ -39,7 +36,7 @@ class T_Spider(RedisSpider):
                 Up_time = datetime.datetime.now().strftime('%Y-%m-%d-%H-%M') # 当前时间
 
                 item = WeiboTargetItem()
-                item["Target_ID"] = U_ID + "-" + T_id
+                item["Target_ID"] = U_ID + "-" + T_id[2:]
                 item["Target_Name"] = name
                 item["Update_Time"] = Up_time #标记的时间是给下次做参照的
                 if content:
@@ -88,14 +85,14 @@ class T_Spider(RedisSpider):
                         item["Tweet_Platform"] = ''
                     try:
                         m1 = Mysql_DB()
-                        sql = 'select Update_Time from Tweet where "' + str(U_ID) + '-' + str(T_id) + '" in (Target_ID)'
+                        sql = 'select Update_Time from Tweet where "' + str(U_ID) + '-' + str(T_id[2:]) + '" in (Target_ID)'
                         sign_tweet_tmp = m1.Query_MySQL(sql)
                         if sign_tweet_tmp == ():
                             sign_comment = 'N'
                             sign_tweet_uptime = 'no_time'
                         else:
                             sign_comment = 'Y'
-                            sign_tweet_uptime = sign_tweet_tmp[0]
+                            sign_tweet_uptime = sign_tweet_tmp[0][0]
                     except Exception as e:
                         print '判断sign_comment错误' + str(e)
                     if sign_comment:
@@ -103,7 +100,7 @@ class T_Spider(RedisSpider):
                     else:
                         item["Tweet_Over"] = ''
                 r1 = Redis_DB(1) #评论相关扔到db1
-                comment_url_sign = comment_url + '|||' + str(sign_tweet_uptime) + sign_comment #前面是地址,|||后是更新时间,[-1]是标志位,判断comment里是否启用更新时间
+                comment_url_sign = comment_url + '|||' + str(sign_tweet_uptime.encode('utf-8', 'ignore')) + sign_comment #前面是地址,|||后是更新时间,[-1]是标志位,判断comment里是否启用更新时间
                 r1.Insert_Redis('Comment_urls', comment_url_sign)
                 yield item
             except Exception as e:
@@ -113,9 +110,6 @@ class T_Spider(RedisSpider):
                 url_next = selector.xpath(
                     u'body/div[@class="pa" and @id="pagelist"]/form/div/a[text()="下页"]/@href').extract()
                 if url_next:
-                    print '========'
-                    print url_next
-                    print '++++++++'
                     r0 = Redis_DB(0) #翻页爬微博扔到db0里
                     r0.Insert_Redis('Target_urls', url_next)
             except Exception as e:

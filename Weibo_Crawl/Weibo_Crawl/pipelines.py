@@ -21,13 +21,13 @@ class WeiboCrawlPipeline(object):
                 print '插入Target数据库错误' + str(e)
         elif isinstance(item, WeiboCommentItem):
             try:
-                sql = """insert into Comment (Comment_ID, Comment_Name, Comment_Content, Comment_Time, Comment_Liked, Comment_Platform, Comment_Personal_Url) VALUES ("%s", "%s", "%s", "%s", "%s", "%s", "%s")"""%(item["Comment_ID"], item["Comment_Name"], item["Comment_Content"], item["Comment_Time"], item["Comment_Time"], item["Comment_Platform"], item["Comment_Personal_Url"])
+                sql = """insert into Comment (Comment_ID, Comment_Name, Comment_Content, Comment_Time, Comment_Liked, Comment_Platform, Comment_Personal_Url) VALUES ("%s", "%s", "%s", "%s", "%s", "%s", "%s")"""%(item["Comment_ID"].encode('utf-8', 'ignore'), item["Comment_Name"].encode('utf-8', 'ignore'), item["Comment_Content"].encode('utf-8', 'ignore'), item["Comment_Time"].encode('utf-8', 'ignore'), item["Comment_Liked"], item["Comment_Platform"].encode('utf-8', 'ignore'), item["Comment_Personal_Url"].encode('utf-8', 'ignore'))
                 self.db.Insert_MySQL(sql)
             except Exception as e:
                 print '插入Comment数据库错误' + str(e)
         elif isinstance(item, WeiboPersonalItem):
             try:
-                sql = """insert into Personal (Personal_ID, Personal_Name, Personal_Tweet_Num, Personal_Fans, Personal_Follow_Num, Personal_Sex, Personal_City, Personal_Birth, Personal_Level, Personal_Sentiment, Personal_Introduce, Personal_Authentication) VALUES ("%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s")"""%(item["Personal_ID"], item["Personal_Name"], item["Personal_Tweet_Num"], item["Personal_Fans"], item["Personal_Follow_Num"], item["Personal_Sex"], item["Personal_City"], item["Personal_Birth"], item["Personal_Level"], item["Personal_Sentiment"], item["Personal_Introduce"], item["Personal_Authentication"])
+                sql = """insert into Personal (Personal_ID, Personal_Name, Personal_Tweet_Num, Personal_Fans, Personal_Follow_Num, Personal_Sex, Personal_City, Personal_Birth, Personal_Level, Personal_Sentiment, Personal_Introduce, Personal_Authentication) VALUES ("%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s")"""%(item["Personal_ID"].encode('utf-8', 'ignore'), item["Personal_Name"].encode('utf-8', 'ignore'), item["Personal_Tweet_Num"], item["Personal_Fans"], item["Personal_Follow_Num"], item["Personal_Sex"].encode('utf-8', 'ignore'), item["Personal_City"].encode('utf-8', 'ignore'), item["Personal_Birth"].encode('utf-8', 'ignore'), item["Personal_Level"].encode('utf-8', 'ignore'), item["Personal_Sentiment"].encode('utf-8', 'ignore'), item["Personal_Introduce"].encode('utf-8', 'ignore'), item["Personal_Authentication"].encode('utf-8', 'ignore'))
                 self.db.Insert_MySQL(sql)
             except Exception as e:
                 print '插入Personal数据库错误' + str(e)

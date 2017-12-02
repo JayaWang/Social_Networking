@@ -108,9 +108,9 @@ a
 import datetime, re
 def Date_Measure(date):
     try:
-        if u'年' in date:
+        if '年' in date:
             return 100  # 随便写个大于7的
-        elif u'月' in date:
+        elif '月' in date:
             YMD = datetime.datetime.now().strftime('%Y-%m-%d').split('-')
             now = datetime.datetime(int(YMD[0]), int(YMD[1]), int(YMD[2]))
             a = re.findall('(\d+)月(\d+)日', date)
@@ -130,7 +130,7 @@ print a
 
 a = ()
 print (a == ())
-'''
+
 
 import re
 url = 'https://weibo.cn/u/5187664653|||dcN'
@@ -140,7 +140,29 @@ newurl = r.sub('', url)
 sign0 = last[0][:-1]
 sign1 = last[0][-1]
 print last
-print sign0, sign1
+print sign0, sign1'''
 
+import datetime
+import re
+
+def Date_Measure(Up_Time, Comment_Time):
+    if '年' in Comment_Time:
+        return 1  # 随便写个大于0的
+    elif '月' in Comment_Time:
+        Up_Time = Up_Time.split('-')
+        upt = datetime.datetime(int(Up_Time[0]), int(Up_Time[1]), int(Up_Time[2]), int(Up_Time[3]), int(Up_Time[4]))
+        a = re.findall('(\d+)月(\d+)日\s(\d+):(\d+)', Comment_Time)
+        cmt = datetime.datetime(int(Up_Time[0]), int(a[0][0]), int(a[0][1]), int(a[0][2]), int(a[0][3]))
+        b = upt - cmt
+        a = str(b)[0]
+        if a == '-':
+            return -1
+        else:
+            return 1
+    else:  # 今天的帖子
+        return -1
+
+a = Date_Measure('2017-12-01-20-21', '11月23日 17:38 ')
+print a
 
 

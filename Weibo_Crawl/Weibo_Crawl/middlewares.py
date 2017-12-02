@@ -170,7 +170,6 @@ class CookiesMiddleware(RetryMiddleware):
                 break
             else:
                 redisKeys.remove(elem)
-
     def process_response(self, request, response, spider):
         if response.status in [300, 301, 302, 303]:
             try:

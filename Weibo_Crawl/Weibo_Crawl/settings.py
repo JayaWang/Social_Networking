@@ -23,7 +23,7 @@ ROBOTSTXT_OBEY = False
 DOWNLOAD_TIMEOUT=5
 DNSCACHE_ENABLED=True
 
-COOKIES_ENABLED = True
+#COOKIES_ENABLED = True
 CONCURRENT_REQUESTS=1
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
@@ -62,7 +62,7 @@ DOWNLOADER_MIDDLEWARES = {
     #'Weibo_Crawl.middlewares.Proxy_Middleware': 100,
     'Weibo_Crawl.middlewares.Usage_Middleware': 400,
     'Weibo_Crawl.middlewares.Timeout_Middleware': 610,
-    'Weibo_Crawl.middlewares.CookiesMiddleware': 410,
+    'Weibo_Crawl.middlewares.CookiesMiddleware': 401,
     'Weibo_Crawl.middlewares.SignMiddleware': 300, #更新标志位
 }
 

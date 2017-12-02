@@ -8,6 +8,10 @@ import requests
 import time
 import json
 from selenium import webdriver
+from selenium.webdriver import ActionChains
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 import logging
 from yumdama import identify
@@ -39,6 +43,8 @@ def getCookie(account, password):
         return get_cookie_from_login_sina_com_cn(account, password)
     elif COOKIE_GETWAY ==1:
         return get_cookie_from_weibo_cn(account, password)
+    elif COOKIE_GETWAY == 2:
+        return get_cookie_from_weibo(account, password)
     else:
         logger.error("COOKIE_GETWAY Error!")
 
@@ -85,7 +91,7 @@ def get_cookie_from_weibo_cn(account, password):
         time.sleep(1)
 
         failure = 0
-        while "微博" in browser.title and failure < 5:
+        while u"微博" in browser.title and failure < 5:
             failure += 1
             browser.save_screenshot("/Users/WJY/Desktop/check_pic/aa.png") #存放验证码的位置
             username = browser.find_element_by_name("mobile")
@@ -99,10 +105,10 @@ def get_cookie_from_weibo_cn(account, password):
                 code = browser.find_element_by_name("code")
                 code.clear()
                 if IDENTIFY == 1:
-                    code_txt = raw_input("请查看路径下新生成的aa.png，然后输入验证码:")  # 手动输入验证码
+                    code_txt = raw_input(u"请查看路径下新生成的aa.png，然后输入验证码:")  # 手动输入验证码
                 else:
                     from PIL import Image
-                    img = browser.find_element_by_xpath('//form[@method="post"]/div/img[@alt="请打开图片显示"]')
+                    img = browser.find_element_by_xpath(u'//form[@method="post"]/div/img[@alt="请打开图片显示"]')
                     x = img.location["x"]
                     y = img.location["y"]
                     im = Image.open("aa.png")
@@ -115,14 +121,14 @@ def get_cookie_from_weibo_cn(account, password):
             commit = browser.find_element_by_name("submit")
             commit.click()
             time.sleep(3)
-            if "我的首页" not in browser.title:
+            if u"我的首页" not in browser.title:
                 time.sleep(4)
-            if '未激活微博' in browser.page_source:
-                print '账号未开通微博'
+            if u'未激活微博' in browser.page_source:
+                print u'账号未开通微博'
                 return {}
 
         cookie = {}
-        if "我的首页" in browser.title:
+        if u"我的首页" in browser.title:
             for elem in browser.get_cookies():
                 cookie[elem["name"]] = elem["value"]
             logger.warning("Get Cookie Success!( Account:%s )" % account)
@@ -135,6 +141,24 @@ def get_cookie_from_weibo_cn(account, password):
             browser.quit()
         except Exception, e:
             pass
+
+def get_cookie_from_weibo(username, password):
+    driver = webdriver.Chrome()
+    driver.get('https://weibo.cn')
+    assert u"微博" in driver.title
+    login_link = driver.find_element_by_link_text(u'登录')
+    ActionChains(driver).move_to_element(login_link).click().perform()
+    login_name = WebDriverWait(driver, 10).until(
+        EC.visibility_of_element_located((By.ID, "loginName"))
+    )
+    login_password = driver.find_element_by_id("loginPassword")
+    login_name.send_keys(username)
+    login_password.send_keys(password)
+    login_button = driver.find_element_by_id("loginAction")
+    login_button.click()
+    cookie = driver.get_cookies()
+    driver.close()
+    return json.dumps(cookie)
 
 
 def initCookie(rconn):
