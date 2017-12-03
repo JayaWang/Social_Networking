@@ -99,7 +99,7 @@ class T_Spider(RedisSpider):
                         item["Tweet_Over"] = sign_comment
                     else:
                         item["Tweet_Over"] = ''
-                r1 = Redis_DB(1) #评论相关扔到db1
+                r1 = Redis_DB(0) #评论相关扔到db0
                 comment_url_sign = comment_url + '|||' + str(sign_tweet_uptime.encode('utf-8', 'ignore')) + sign_comment #前面是地址,|||后是更新时间,[-1]是标志位,判断comment里是否启用更新时间
                 r1.Insert_Redis('Comment_urls', comment_url_sign)
                 yield item
@@ -110,8 +110,9 @@ class T_Spider(RedisSpider):
                 url_next = selector.xpath(
                     u'body/div[@class="pa" and @id="pagelist"]/form/div/a[text()="下页"]/@href').extract()
                 if url_next:
+                    url_all = url_next[0] + '|||' + name + sign_tweet
                     r0 = Redis_DB(0) #翻页爬微博扔到db0里
-                    r0.Insert_Redis('Target_urls', url_next)
+                    r0.Insert_Redis('Target_urls', url_all)
             except Exception as e:
                 print ('插入redis队列错误' + str(e))
 

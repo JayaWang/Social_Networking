@@ -140,7 +140,7 @@ newurl = r.sub('', url)
 sign0 = last[0][:-1]
 sign1 = last[0][-1]
 print last
-print sign0, sign1'''
+print sign0, sign1
 
 import datetime
 import re
@@ -163,6 +163,14 @@ def Date_Measure(Up_Time, Comment_Time):
         return -1
 
 a = Date_Measure('2017-12-01-20-21', '11月23日 17:38 ')
-print a
+print a'''
+
+a = [1]
+b = []
+
+if b and b[0]:
+    print 'absc'
+else:
+    print 'cccc'
 
 

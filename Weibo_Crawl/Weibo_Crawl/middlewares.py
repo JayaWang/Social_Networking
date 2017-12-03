@@ -80,7 +80,7 @@ class Proxy_Middleware(object):
         self.use_num += 1
         request.meta['proxy'] = self.proxy_ip
 
-class Usage_Middleware(UserAgentMiddleware):
+class Usage_Middleware(object):
     def process_request(self, request, spider):
         agents = [
             "Mozilla/5.0 (Linux; U; Android 2.3.6; en-us; Nexus S Build/GRK39F) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1",

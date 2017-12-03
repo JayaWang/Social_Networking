@@ -17,7 +17,7 @@ import logging
 from yumdama import identify
 
 IDENTIFY = 1  # 验证码输入方式:        1:看截图aa.png，手动输入     2:云打码
-COOKIE_GETWAY = 0 # 0 代表从https://login.sina.com.cn/sso/login.php?client=ssologin.js(v1.4.18) 获取cookie   # 1 代表从https://weibo.cn/login/获取Cookie
+COOKIE_GETWAY = 2 # 0 代表从https://login.sina.com.cn/sso/login.php?client=ssologin.js(v1.4.18) 获取cookie   # 1 代表从https://weibo.cn/login/获取Cookie
 dcap = dict(DesiredCapabilities.PHANTOMJS)  # PhantomJS需要使用老版手机的user-agent，不然验证码会无法通过
 dcap["phantomjs.page.settings.userAgent"] = (
     "Mozilla/5.0 (Linux; U; Android 2.3.6; en-us; Nexus S Build/GRK39F) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1"
@@ -155,7 +155,8 @@ def get_cookie_from_weibo(username, password):
     login_name.send_keys(username)
     login_password.send_keys(password)
     login_button = driver.find_element_by_id("loginAction")
-    login_button.click()
+    login_button.click() #自动按下登陆
+    WebDriverWait(driver, 30).until(EC.title_is(u"我的首页")) #等待过了验证到首页
     cookie = driver.get_cookies()
     driver.close()
     return json.dumps(cookie)
@@ -164,10 +165,13 @@ def get_cookie_from_weibo(username, password):
 def initCookie(rconn):
     """ 获取所有账号的Cookies，存入Redis。如果Redis已有该账号的Cookie，则不再获取。 """
     for weibo in myWeiBo:
-        if rconn.get("Cookies:%s--%s" % (weibo[0], weibo[1])) is None:  #我这里不打算区分三个爬虫的cookie，直接都叫Cookies，对应下账号密码就行了
-            cookie = getCookie(weibo[0], weibo[1])
-            if len(cookie) > 0:
-                rconn.set("Cookies:%s--%s" % (weibo[0], weibo[1]), cookie)
+        try:
+            if rconn.get("Cookies:%s--%s" % (weibo[0], weibo[1])) is None:  #我这里不打算区分三个爬虫的cookie，直接都叫Cookies，对应下账号密码就行了
+                cookie = getCookie(weibo[0], weibo[1])
+                if len(cookie) > 0:
+                    rconn.set("Cookies:%s--%s" % (weibo[0], weibo[1]), cookie)
+        except Exception as e:
+            print '批量登陆错误' + str(e)
     cookieNum = "".join(rconn.keys()).count("Cookies")
     logger.warning("The num of the cookies is %s" % cookieNum)
     if cookieNum == 0:

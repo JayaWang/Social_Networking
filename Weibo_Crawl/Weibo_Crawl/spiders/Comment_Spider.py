@@ -69,7 +69,7 @@ class C_Spider(RedisSpider):
                         item["Comment_Platform"] = ''
                 print item["Comment_ID"].encode('utf-8', 'ignore'), item["Comment_Name"].encode('utf-8', 'ignore'), item["Comment_Content"].encode('utf-8', 'ignore'), item["Comment_Time"].encode('utf-8', 'ignore'), item["Comment_Liked"], item["Comment_Platform"].encode('utf-8', 'ignore'), item["Comment_Personal_Url"].encode('utf-8', 'ignore')
                 yield item
-                r2 = Redis_DB(2)  # 个人信息扔到db2
+                r2 = Redis_DB(0)  # 个人信息扔到db0
                 r2.Insert_Redis('Personal_urls', personal_url)
             except Exception as e:
                 print '抓取评论页面错误' + str(e)
@@ -78,8 +78,8 @@ class C_Spider(RedisSpider):
                 url_next = selector.xpath(
                     'body/div[@id="pagelist"]/form/div/a[1]/@href').extract()
                 if url_next:
-                    r1 = Redis_DB(1) #评论页扔到db1里
-                    url = 'https://weibo.cn' + url_next[0]
+                    r1 = Redis_DB(0) #评论页扔到db0里
+                    url = 'https://weibo.cn' + url_next[0] + '|||' + Up_Time + sign_comment
                     r1.Insert_Redis('Comment_urls', url)
             except Exception as e:
                 print ('插入redis队列错误' + str(e))
