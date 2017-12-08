@@ -21,7 +21,7 @@ class WeiboCrawlPipeline(object):
                 print '插入Target数据库错误' + str(e)
         elif isinstance(item, WeiboCommentItem):
             try:
-                sql = """insert into Comment (Comment_ID, Comment_Name, Comment_Content, Comment_Time, Comment_Liked, Comment_Platform, Comment_Personal_Url) VALUES ("%s", "%s", "%s", "%s", "%s", "%s", "%s")"""%(item["Comment_ID"].encode('utf-8', 'ignore'), item["Comment_Name"].encode('utf-8', 'ignore'), item["Comment_Content"].encode('utf-8', 'ignore'), item["Comment_Time"].encode('utf-8', 'ignore'), item["Comment_Liked"], item["Comment_Platform"].encode('utf-8', 'ignore'), item["Comment_Personal_Url"].encode('utf-8', 'ignore'))
+                sql = """insert into Comment (Comment_ID, Comment_Name, Comment_Content, Comment_Time, Comment_Liked, Comment_Platform, Comment_Personal_Url, Tweet_Owner) VALUES ("%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s")"""%(item["Comment_ID"].encode('utf-8', 'ignore'), item["Comment_Name"].encode('utf-8', 'ignore'), item["Comment_Content"].encode('utf-8', 'ignore'), item["Comment_Time"].encode('utf-8', 'ignore'), item["Comment_Liked"], item["Comment_Platform"].encode('utf-8', 'ignore'), item["Comment_Personal_Url"].encode('utf-8', 'ignore'), item["Tweet_Owner"].encode('utf-8', 'ignore'))
                 self.db.Insert_MySQL(sql)
             except Exception as e:
                 print '插入Comment数据库错误' + str(e)
@@ -31,15 +31,6 @@ class WeiboCrawlPipeline(object):
                 self.db.Insert_MySQL(sql)
             except Exception as e:
                 print '插入Personal数据库错误' + str(e)
-
-'''
-class WeiboCrawlPipeline(object):
-    def __init__(self):
-        self.engine = create_engine('mysql+mysqldb://root:228228@127.0.0.1:3306/Weibo')
-'''
-
-
-
 
 
 

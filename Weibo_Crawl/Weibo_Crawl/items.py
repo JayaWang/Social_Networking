@@ -24,6 +24,8 @@ class WeiboCommentItem(scrapy.Item):
     Comment_Liked = scrapy.Field() #评论点赞数
     Comment_Platform =scrapy.Field() #发布设备
     Comment_Personal_Url =scrapy.Field() #评论者个人主页
+    #Tweet_ID = scrapy.Field() #查看属于哪个微博
+    Tweet_Owner = scrapy.Field() #查看评论属于哪个作者的微博
 
 class WeiboPersonalItem(scrapy.Item):
     Personal_ID = scrapy.Field() #用户ID
