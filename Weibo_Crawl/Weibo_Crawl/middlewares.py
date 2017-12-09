@@ -6,6 +6,7 @@ from scrapy import signals, Request
 import random
 from scrapy.downloadermiddlewares.useragent import UserAgentMiddleware
 from scrapy.downloadermiddlewares.downloadtimeout import DownloadTimeoutMiddleware
+from scrapy.downloadermiddlewares.redirect import RedirectMiddleware
 from scrapy.utils.response import response_status_message
 from scrapy.exceptions import IgnoreRequest
 from scrapy.downloadermiddlewares.retry import RetryMiddleware
@@ -17,6 +18,7 @@ import os
 import re
 import logging
 logger = logging.getLogger(__name__)
+import base64
 
 class WeiboCrawlSpiderMiddleware(object):
     # Not all methods need to be defined. If a method is not defined,
@@ -75,7 +77,7 @@ class Proxy_Middleware(object):
         self.use_num = 0
         self.proxy_ip = ''
     def process_request(self, request, spider):
-        if self.use_num % 2 == 0:
+        if self.use_num % 50 == 0:
             self.proxy_ip = Proxy().GetIP()  #每100次更换一次ip
         self.use_num += 1
         request.meta['proxy'] = self.proxy_ip
@@ -148,6 +150,9 @@ class Usage_Middleware(object):
         ]
         agent = random.choice(agents)
         request.headers["User-Agent"] = agent
+        key = str(base64.b64encode('zju_wjy:47oqxo9q'))
+        value = 'Basic ' + key
+        request.headers["Proxy-Authorization"] = value
 
 class CookiesMiddleware(RetryMiddleware):
     def __init__(self, settings):
@@ -170,7 +175,7 @@ class CookiesMiddleware(RetryMiddleware):
                 break
             else:
                 redisKeys.remove(elem)
-    def process_response(self, request, response, spider):
+    '''def process_response(self, request, response, spider):
         if response.status in [300, 301, 302, 303]:
             try:
                 redirect_url = response.headers["location"]
@@ -188,10 +193,18 @@ class CookiesMiddleware(RetryMiddleware):
             except Exception, e:
                 raise IgnoreRequest
         elif response.status in [403, 414]:
-            logger.error("%s! Stopping..." % response.status)
-            os.system("pause")
+            return request.replace(dont_filter=True)
         else:
+            return response'''
+
+class Redirect_Middleware(RedirectMiddleware):
+    def process_response(self, request, response, spider):
+        http_code = response.status
+        if http_code//100 == 2:
             return response
+        else:
+            print 'response不是200'
+            return request.replace(dont_filter = True)
 
 class SignMiddleware(object):
     def process_request(self, request, spider):

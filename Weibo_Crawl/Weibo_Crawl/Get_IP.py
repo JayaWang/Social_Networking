@@ -7,10 +7,12 @@ class Proxy(object):
         self.db = Mysql_DB()
 
     def GetIP(self):  # 先委屈下放sql里，之后想办法放到redis里去管理
-        sql = "SELECT ip, port FROM proxys WHERE id >= ((SELECT MAX(id) FROM proxys)-(SELECT MIN(id) FROM proxys)) * RAND() + (SELECT MIN(id) FROM proxys)  LIMIT 1"
+        #sql = "SELECT ip, port FROM proxys WHERE id >= ((SELECT MAX(id) FROM proxys)-(SELECT MIN(id) FROM proxys)) * RAND() + (SELECT MIN(id) FROM proxys)  LIMIT 1"
+        sql = "SELECT ip FROM proxys WHERE id >= ((SELECT MAX(id) FROM proxys)-(SELECT MIN(id) FROM proxys)) * RAND() + (SELECT MIN(id) FROM proxys)  LIMIT 1"
         try:
             ip_middle = self.db.Query_MySQL(sql)
-            ip = str(ip_middle[0][0]) + ':' + str(ip_middle[0][1])
+            #ip = str(ip_middle[0][0]) + ':' + str(ip_middle[0][1])
+            ip = str(ip_middle[0][0])
             ip_ok = "http://" + ip
             return ip_ok
         except Exception as e:

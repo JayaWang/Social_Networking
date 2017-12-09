@@ -19,10 +19,7 @@ class C_Spider(RedisSpider):
         sign_comment = response.meta['sign1'] #更新标志位
         divs = selector.xpath('body/div[@class="c" and @id]')  # 当页的所有评论
         sign_time = 0
-        try:
-            Tweet_Owner = selector.xpath('body/div[@id="M_"]/div[1]/a[1]/text()').extract()
-        except Exception as e:
-            print '微博作者提取错误' + str(e)
+        U_ID = re.findall('uid=(\d+)', response.url)
         for div in divs:
             try:
                 Comment_ID = div.xpath('a[1]/@href').extract() #这个id有脏的链接，但是可以直接拼着用
@@ -38,8 +35,8 @@ class C_Spider(RedisSpider):
                 else:
                     item["Comment_Personal_Url"] = ''
                     personal_url = ''
-                if Tweet_Owner:
-                    item['Tweet_Owner'] = Tweet_Owner[0]
+                if U_ID:
+                    item['Tweet_Owner'] = str(U_ID[0])
                 else:
                     item['Tweet_Owner'] = ''
                 if Comment_Name:

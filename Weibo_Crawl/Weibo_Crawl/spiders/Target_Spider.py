@@ -75,7 +75,7 @@ class T_Spider(RedisSpider):
                         else:
                             sign_time += 1
                     else:
-                        if self.Date_Measure(tp[0]) <30:
+                        if self.Date_Measure(tp[0]) <180:
                             pass
                         else:
                             sign_time += 1
@@ -89,7 +89,7 @@ class T_Spider(RedisSpider):
                         sign_tweet_tmp = m1.Query_MySQL(sql)
                         if sign_tweet_tmp == ():
                             sign_comment = 'N'
-                            sign_tweet_uptime = 'no_time'
+                            sign_tweet_uptime = 'notime'
                         else:
                             sign_comment = 'Y'
                             sign_tweet_uptime = sign_tweet_tmp[0][0]
@@ -110,7 +110,7 @@ class T_Spider(RedisSpider):
                 url_next = selector.xpath(
                     u'body/div[@class="pa" and @id="pagelist"]/form/div/a[text()="下页"]/@href').extract()
                 if url_next:
-                    url_all = url_next[0] + '|||' + name + sign_tweet
+                    url_all = 'https://weibo.cn' + url_next[0] + '|||' + name + sign_tweet
                     r0 = Redis_DB(0) #翻页爬微博扔到db0里
                     r0.Insert_Redis('Target_urls', url_all)
             except Exception as e:

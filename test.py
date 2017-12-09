@@ -163,7 +163,7 @@ def Date_Measure(Up_Time, Comment_Time):
         return -1
 
 a = Date_Measure('2017-12-01-20-21', '11月23日 17:38 ')
-print a'''
+print a
 
 a = [1]
 b = []
@@ -172,5 +172,9 @@ if b and b[0]:
     print 'absc'
 else:
     print 'cccc'
+'''
 
-
+import re
+a = 'https://weibo.cn/comment/FvGVeeYne?uid=1713031610&rl=0#cmtfrm'
+U_ID = re.findall('uid=(\d+)', a)
+print str(U_ID[0])
