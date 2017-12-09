@@ -172,9 +172,10 @@ if b and b[0]:
     print 'absc'
 else:
     print 'cccc'
-'''
+
 
 import re
 a = 'https://weibo.cn/comment/FvGVeeYne?uid=1713031610&rl=0#cmtfrm'
 U_ID = re.findall('uid=(\d+)', a)
-print str(U_ID[0])
+print str(U_ID[0])'''
+from opencc import OpenCC
