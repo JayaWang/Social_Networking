@@ -16,6 +16,7 @@ class C_Spider(RedisSpider):
     def parse(self, response):
         selector = Selector(response)
         Up_Time = response.meta['sign0'] #上一次更新评论区的时间
+        tweet_url = response.url #十分重要，根据此可以得知是哪条微博，到时候用in判断下就行，不需要正则提取
         sign_comment = response.meta['sign1'] #更新标志位
         divs = selector.xpath('body/div[@class="c" and @id]')  # 当页的所有评论
         sign_time = 0
@@ -28,6 +29,10 @@ class C_Spider(RedisSpider):
                 Comment_Liked = re.findall(u'赞\[(\d+)\]', div.extract())  # 点赞数
                 tp = div.xpath('span[@class="ct"]/text()').extract()
                 item = WeiboCommentItem()
+                if tweet_url:
+                    item["Tweet_Url"] = tweet_url
+                else:
+                    item["Tweet_Url"] = ''
                 if Comment_ID:
                     item["Comment_ID"] = Comment_ID[0]
                     personal_url = 'https://weibo.cn' + str(Comment_ID[0])

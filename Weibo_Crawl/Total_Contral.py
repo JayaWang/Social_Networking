@@ -60,11 +60,43 @@ from Weibo_Crawl.With_DB import Redis_DB
                'https://weibo.cn/comment/FxLIDpIlz?uid=2286552551&rl=0&page=400'] #抓评论主页'''
 
 commentlist = [
-    'https://weibo.cn/comment/Fz6Ehz4I1?uid=1195300800&rl=0#cmtfrm',
-    'https://weibo.cn/comment/Fz6GWFx0w?uid=1195300800&rl=0#cmtfrm',
-    'https://weibo.cn/comment/Fz78Ov6ZI?uid=1195300800&rl=0#cmtfrm',
-    'https://weibo.cn/comment/Fz7L44hJ5?uid=1195300800&rl=0#cmtfrm',
-    'https://weibo.cn/comment/Fz824DMwr?uid=1195300800&rl=0#cmtfrm'
+    'https://weibo.cn/comment/FyI6CBc5S?uid=1195300800&rl=0&page=200',
+    'https://weibo.cn/comment/FyOt97bDN?uid=1195300800&rl=0&page=200',
+    'https://weibo.cn/comment/FyPw16hLW?uid=1195300800&rl=0&page=200',
+    'https://weibo.cn/comment/FyTKr9sj1?uid=1195300800&rl=0&page=200',
+    'https://weibo.cn/comment/FyTKXFGLP?uid=1195300800&rl=0&page=200',
+    'https://weibo.cn/comment/FyTNstQWN?uid=1195300800&rl=0&page=200',
+    'https://weibo.cn/comment/FyTRyCWKI?uid=1195300800&rl=0&page=200',
+    'https://weibo.cn/comment/FyTYwC5YG?uid=1195300800&rl=0&page=200',
+    'https://weibo.cn/comment/FyUbRpYTW?uid=1195300800&rl=0&page=200',
+    'https://weibo.cn/comment/FyX7cAcGw?uid=1195300800&rl=0&page=200',
+    'https://weibo.cn/comment/FyXecqwyM?uid=1195300800&rl=0&page=200',
+    'https://weibo.cn/comment/FyXgS8JQG?uid=1195300800&rl=0&page=200',
+    'https://weibo.cn/comment/Fz0kREGx6?uid=1195300800&rl=0&page=200',
+    'https://weibo.cn/comment/Fz0TS1wns?uid=1195300800&rl=0&page=200',
+    'https://weibo.cn/comment/Fz12Jllhx?uid=1195300800&rl=0&page=200',
+    'https://weibo.cn/comment/Fz1shdTRH?uid=1195300800&rl=0&page=200',
+    'https://weibo.cn/comment/Fz2Sn6sbI?uid=1195300800&rl=0&page=200',
+    'https://weibo.cn/comment/Fz6Ehz4I1?uid=1195300800&rl=0&page=200',
+    'https://weibo.cn/comment/Fz6GWFx0w?uid=1195300800&rl=0&page=200',
+    'https://weibo.cn/comment/Fz78Ov6ZI?uid=1195300800&rl=0&page=200',
+    'https://weibo.cn/comment/Fz7L44hJ5?uid=1195300800&rl=0&page=200',
+    'https://weibo.cn/comment/Fz824DMwr?uid=1195300800&rl=0&page=200',
+    'https://weibo.cn/comment/Fz9b3solv?uid=1195300800&rl=0&page=200',
+    'https://weibo.cn/comment/Fz9bAg9tg?uid=1195300800&rl=0&page=200',
+    'https://weibo.cn/comment/Fza95a8G0?uid=1195300800&rl=0&page=200',
+    'https://weibo.cn/comment/FzaozuE0c?uid=1195300800&rl=0&page=200',
+    'https://weibo.cn/comment/FzarIehN7?uid=1195300800&rl=0&page=200',
+    'https://weibo.cn/comment/Fzb59tHF7?uid=1195300800&rl=0&page=200',
+    'https://weibo.cn/comment/Fzb9bpXWW?uid=1195300800&rl=0&page=200',
+    'https://weibo.cn/comment/Fzb9MFX9M?uid=1195300800&rl=0&page=200',
+    'https://weibo.cn/comment/FzbdHgl9y?uid=1195300800&rl=0&page=200',
+    'https://weibo.cn/comment/FzbfS1iU9?uid=1195300800&rl=0&page=200',
+    'https://weibo.cn/comment/Fzbhl1XA4?uid=1195300800&rl=0&page=200',
+    'https://weibo.cn/comment/FzbkS08oY?uid=1195300800&rl=0&page=200',
+    'https://weibo.cn/comment/FzbC2EeoY?uid=1195300800&rl=0&page=200',
+    'https://weibo.cn/comment/FzbILxZde?uid=1195300800&rl=0&page=200',
+    'https://weibo.cn/comment/Fz98f7SDq?uid=1195300800&rl=0&page=200'
 ]
 
 def Yanyuan():
