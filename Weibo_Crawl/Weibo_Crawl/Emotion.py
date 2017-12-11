@@ -9,15 +9,15 @@ from opencc import OpenCC
 
 class Emotion(object):
     def __init__(self):
-        APP_ID = '10362966'  # '你的 App ID'
-        API_KEY = 'nQWiWR6DzjXsfYjW1yyVy8TB'  # '你的 Api Key'
-        SECRET_KEY = 'WpjMdNWYv6TSg2psofaGt4LNW366tvnj'  # '你的 Secret Key'
+        APP_ID = '10508840'  # '你的 App ID'
+        API_KEY = 'W9BwLsLvlPQvD9LsfWIBGX28'  # '你的 Api Key'
+        SECRET_KEY = 'd4wSFFDKm0VjGrPZVxWpZyGfAFYuD3AX'  # '你的 Secret Key'
         self.db = Mysql_DB()
         self.aip = AipNlp(APP_ID, API_KEY, SECRET_KEY)
         self.trans = OpenCC('t2s') #模式设置为繁体-简体
 
     def Get_Sentence(self):
-        sql = "select id, Comment_Content from comment where over = 'N' limit " + str(100)
+        sql = "select id, Comment_Content from comment where over = 'YYYY' limit " + str(100)
         try:
             Sentence_list = self.db.Query_MySQL(sql)  # 读取数据库，获取step行列
             for i in Sentence_list:  # 执行YYY修改命令,看看参照什么来做基准
@@ -27,7 +27,7 @@ class Emotion(object):
             print ('query_db函数执行错误' + str(e))
 
     def update_db(self, i):
-        changeY_sql = "update comment set over = 'Y' where id = " + str(i)
+        changeY_sql = "update comment set over = 'YY' where id = " + str(i)
         try:
             self.db.Insert_MySQL(changeY_sql)
         except Exception as e:
@@ -69,7 +69,7 @@ class Emotion(object):
 
 if __name__ == '__main__':
     a = Emotion()
-    for i in range(2832): #2832
+    for i in range(1900): #2832
         a.Get_Analyse()
         print '第' + str(i) + '次完成了'
 

@@ -59,7 +59,7 @@ DOWNLOAD_DELAY = 0.5
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
     #'Weibo_Crawl.middlewares.MyCustomDownloaderMiddleware': 543,
-    'Weibo_Crawl.middlewares.Proxy_Middleware': 100,
+    #'Weibo_Crawl.middlewares.Proxy_Middleware': 100,
     'Weibo_Crawl.middlewares.Usage_Middleware': 400,
     'Weibo_Crawl.middlewares.Timeout_Middleware': 610,
     'Weibo_Crawl.middlewares.CookiesMiddleware': 401,

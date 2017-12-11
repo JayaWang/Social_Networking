@@ -178,4 +178,10 @@ import re
 a = 'https://weibo.cn/comment/FvGVeeYne?uid=1713031610&rl=0#cmtfrm'
 U_ID = re.findall('uid=(\d+)', a)
 print str(U_ID[0])'''
-from opencc import OpenCC
+import datetime
+import re
+time = u'12分钟前'
+b = re.findall(u'(\d+)分钟前', time)[0]
+m = 60 - int(b)
+new_time = '今天 11:' + str(m)
+print new_time

@@ -3,7 +3,7 @@
 #统筹迟几天再做，先处理人工选定的微博数据
 from Weibo_Crawl.With_DB import Redis_DB
 
-commentlist = ['https://weibo.cn/comment/FxOfQdiA4?uid=1914100420&rl=0&page=400',
+'''commentlist = ['https://weibo.cn/comment/FxOfQdiA4?uid=1914100420&rl=0&page=400',
                'https://weibo.cn/comment/FwHPOe9Kc?uid=1914100420&rl=0&page=400',
                'https://weibo.cn/comment/FvFsS0JZW?uid=1914100420&rl=0&page=400',
                'https://weibo.cn/comment/FvkUDhD8V?uid=1914100420&rl=0&page=400',
@@ -57,7 +57,15 @@ commentlist = ['https://weibo.cn/comment/FxOfQdiA4?uid=1914100420&rl=0&page=400'
                'https://weibo.cn/comment/FwMcAAy2c?uid=1246229612&rl=0&page=400',
                'https://weibo.cn/comment/FxQDtlXmC?uid=2286552551&rl=0&page=400',
                'https://weibo.cn/comment/FxQ78r0MK?uid=2286552551&rl=0&page=400',
-               'https://weibo.cn/comment/FxLIDpIlz?uid=2286552551&rl=0&page=400'] #抓评论主页
+               'https://weibo.cn/comment/FxLIDpIlz?uid=2286552551&rl=0&page=400'] #抓评论主页'''
+
+commentlist = [
+    'https://weibo.cn/comment/Fz6Ehz4I1?uid=1195300800&rl=0#cmtfrm',
+    'https://weibo.cn/comment/Fz6GWFx0w?uid=1195300800&rl=0#cmtfrm',
+    'https://weibo.cn/comment/Fz78Ov6ZI?uid=1195300800&rl=0#cmtfrm',
+    'https://weibo.cn/comment/Fz7L44hJ5?uid=1195300800&rl=0#cmtfrm',
+    'https://weibo.cn/comment/Fz824DMwr?uid=1195300800&rl=0#cmtfrm'
+]
 
 def Yanyuan():
     print 'begin'
